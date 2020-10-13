@@ -4,108 +4,59 @@ const io = require('socket.io')(3000);
 
 const storeNameSpace = io.of('/store');
 
-storeNameSpace.on('connection', (socket)=>{
-  console.log('Store Name Space connected', socket.id);
+var salesOrderQueue = {
+  sales_order:{},
+};
 
-  socket.on('join', (room)=>{
-    //be back later
-  });
+var repairOrderQueue = {
+  repair_order:{},
+};
 
+// var salesCompleteQueue={
+//   sales_completed:{},
+// };
 
-})const io = require('socket.io')(3000);
-
-const storeNameSpace = io.of('/store');
-
-storeNameSpace.on('connection', (socket)=>{
-  console.log('Store Name Space connected', socket.id);
-
-  socket.on('join', (room)=>{
-    //be back later
-  });
+// var repairCompleteQueue={
+//   repair_completed: {},
+// };
 
 
-})const io = require('socket.io')(3000);
 
-const storeNameSpace = io.of('/store');
+function getAll (room){
+  //get back later
+}
 
-storeNameSpace.on('connection', (socket)=>{
-  console.log('Store Name Space connected', socket.id);
+function msgReceived (room){
+  //get back later
+}
 
-  socket.on('join', (room)=>{
-    //be back later
-  });
-
-
-})const io = require('socket.io')(3000);
-
-const storeNameSpace = io.of('/store');
+function handleCompleted(eventName, room=false){
+  // a universal completed event handler
+  return payload =>{
+    const time = new Date();
+    console.log({event: eventName, time, payload});
+  };
+}
 
 storeNameSpace.on('connection', (socket)=>{
   console.log('Store Name Space connected', socket.id);
 
   socket.on('join', (room)=>{
-    //be back later
+    const validRoom = ['sales', 'repair', 'purchase', 'repairOrder'];
+    if (validRoom.includes(room)){
+      console.log(`Welcome to the ${room} room`);
+      socket.join(room);
+    }
   });
 
+  socket.on('getAll', getAll);
 
-})const io = require('socket.io')(3000);
+  socket.on('received', msgReceived);
 
-const storeNameSpace = io.of('/store');
+  socket.on('sales_completed', handleCompleted);
 
-storeNameSpace.on('connection', (socket)=>{
-  console.log('Store Name Space connected', socket.id);
-
-  socket.on('join', (room)=>{
-    //be back later
-  });
+  socket.on('repair-completed', handleCompleted);
 
 
-})const io = require('socket.io')(3000);
+});
 
-const storeNameSpace = io.of('/store');
-
-storeNameSpace.on('connection', (socket)=>{
-  console.log('Store Name Space connected', socket.id);
-
-  socket.on('join', (room)=>{
-    //be back later
-  });
-
-
-})const io = require('socket.io')(3000);
-
-const storeNameSpace = io.of('/store');
-
-storeNameSpace.on('connection', (socket)=>{
-  console.log('Store Name Space connected', socket.id);
-
-  socket.on('join', (room)=>{
-    //be back later
-  });
-
-
-})const io = require('socket.io')(3000);
-
-const storeNameSpace = io.of('/store');
-
-storeNameSpace.on('connection', (socket)=>{
-  console.log('Store Name Space connected', socket.id);
-
-  socket.on('join', (room)=>{
-    //be back later
-  });
-
-
-})const io = require('socket.io')(3000);
-
-const storeNameSpace = io.of('/store');
-
-storeNameSpace.on('connection', (socket)=>{
-  console.log('Store Name Space connected', socket.id);
-
-  socket.on('join', (room)=>{
-    //be back later
-  });
-
-
-})
