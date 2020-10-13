@@ -1,0 +1,24 @@
+{
+  "name": "apple-store-io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "caps.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonnyleealas/apple-store-io.git"
+  },
+  "author": "Davee, Sarah, Peng, Jonathon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonnyleealas/apple-store-io/issues"
+  },
+  "homepage": "https://github.com/jonnyleealas/apple-store-io#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.1"
+  }
+}
