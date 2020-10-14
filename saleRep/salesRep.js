@@ -13,8 +13,8 @@ saleConnection.on('purchase_order', sales_waiting);
 
 function sales_waiting(order){
   setTimeout(()=>{
-    console.log('Taking care of customer: ', order.sales_order.customerName);
-    console.log('Ticket Number: ', order.sales_order.orderID);
+    console.log('Taking care of customer: ', order.order.customerName);
+    console.log('Ticket Number: ', order.order.orderID);
     saleConnection.emit('received', 'sales');
   },1000);
 

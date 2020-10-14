@@ -23,7 +23,7 @@ function newPurchaseOrder(){
   setInterval(()=>{
     let order = {
       orderID: faker.random.uuid(),
-      customer: faker.name.findName(),
+      customerName: faker.name.findName(),
       address: faker.address.streetAddress(),
       orderHandler: 'salesRep',
     };
