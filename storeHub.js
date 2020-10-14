@@ -2,7 +2,8 @@
 
 const io = require('socket.io')(3000);
 
-const storeNameSpace = io.of('/store');
+const salesNameSpace = io.of('/sales');
+// const repairNameSpace = io.of('/repair');
 
 var salesOrderQueue = {
   sales_order:{},
@@ -12,50 +13,45 @@ var repairOrderQueue = {
   repair_order:{},
 };
 
-// var salesCompleteQueue={
-//   sales_completed:{},
-// };
-
-// var repairCompleteQueue={
-//   repair_completed: {},
-// };
+// customer  queue in store hub
 
 
 
-function getAll (room){
-  //get back later
-}
+// function getAll (room){
+//   //get back later
+// }
 
-function msgReceived (room){
-  //get back later
-}
+// function msgReceived (room){
+//   //get back later
+// }
 
-function handleCompleted(eventName, room=false){
-  // a universal completed event handler
-  return payload =>{
-    const time = new Date();
-    console.log({event: eventName, time, payload});
-  };
-}
+// function handleCompleted(eventName, room=false){
+//   // a universal completed event handler
+//   return payload =>{
+//     const time = new Date();
+//     console.log({event: eventName, time, payload});
+//   };
+// }
 
-storeNameSpace.on('connection', (socket)=>{
-  console.log('Store Name Space connected', socket.id);
+salesNameSpace.on('connection', (socket)=>{
 
   socket.on('join', (room)=>{
-    const validRoom = ['sales', 'repair', 'purchase', 'repairOrder'];
-    if (validRoom.includes(room)){
-      console.log(`Welcome to the ${room} room`);
-      socket.join(room);
-    }
+
+    console.log('A new sales customer room with order ID is created:', room);
+    socket.join(room);
+
   });
 
-  socket.on('getAll', getAll);
 
-  socket.on('received', msgReceived);
 
-  socket.on('sales_completed', handleCompleted);
+  
+  // socket.on('getAll', getAll);
 
-  socket.on('repair-completed', handleCompleted);
+  // socket.on('received', msgReceived);
+
+  // socket.on('sales_completed', handleCompleted);
+
+  // socket.on('repair-completed', handleCompleted);
 
 
 });
