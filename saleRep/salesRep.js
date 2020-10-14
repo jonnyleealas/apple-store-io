@@ -7,19 +7,19 @@ const saleConnection = io.connect(host);
 
 saleConnection.emit('join', 'salesRep');
 
-saleConnection.emit('getAll', 'salesRep');
+saleConnection.emit('getAll', {target: 'purchase_order', event: 'purchase_order'});
 
 saleConnection.on('purchase_order', sales_waiting);
 
 function sales_waiting(order){
-  setTimeout(()=>{
-    console.log('Taking care of customer: ', order.order.customerName);
-    console.log('Ticket Number: ', order.order.orderID);
-    saleConnection.emit('received', 'sales');
-  },1000);
+
+  console.log('Taking care of customer: ', order.customerName);
+  console.log('Ticket Number: ', order.orderID);
+  saleConnection.emit('received', {orderID: order.orderID, target: 'purchase_order'});
 
   setTimeout(()=>{
     console.log('Sales completed for customer: ', order.customerName);
-    saleConnection.emit('sales_completed');
+    console.log('---------------------------------');
+    saleConnection.emit('sales_completed', order);
   }, 3000);
 }

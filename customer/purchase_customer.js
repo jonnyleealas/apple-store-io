@@ -1,21 +1,21 @@
 'use strict';
-// This is the sales rep a
+// This is the sales rep app
 const io = require('socket.io-client');
 const host = 'http://localhost:3000/store';
 const faker = require('faker');
-
 const purchaseConnection = io.connect(host);
 
 purchaseConnection.emit('join', 'purchaseOrder');
 
-// purchaseConnection.emit('getAll', 'purchaseOrder');
+purchaseConnection.emit('getAll', {target: 'sales_completed', event: 'sales_completed'});
 
-purchaseConnection.on('sales-completed', sales_completed);
+purchaseConnection.on('sales_completed', sales_completed);
 
 function sales_completed(order){
-  setTimeout(()=>{
-    console.log(`Thank you for taking care of customer: ${order.customerName}'s order`);
-  },1000);
+  console.log(`Thank you for taking care of customer: ${order.customerName}'s order`);
+
+  purchaseConnection.emit('received', {orderID: order.orderID, target: 'sales_completed'});
+
 }
 
 

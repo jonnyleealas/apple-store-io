@@ -7,19 +7,19 @@ const repairConnection = io.connect(host);
 
 repairConnection.emit('join', 'repairTech');
 
-repairConnection.emit('getAll', 'repairTech');
+repairConnection.emit('getAll', {target: 'repair_order', event: 'repair_order'});
 
 repairConnection.on('repair_order', repair_waiting);
 
 function repair_waiting(order){
-  setTimeout(()=>{
-    console.log('Taking care of customer: ', order.sales_order.customerName);
-    console.log('Ticket Number: ', order.sales_order.orderID);
-    repairConnection.emit('received', 'repair');
-  },1000);
+
+  console.log('Taking care of customer: ', order.customerName);
+  console.log('Ticket Number: ', order.orderID);
+  repairConnection.emit('received', {orderID: order.orderID, target: 'repair_order'});
 
   setTimeout(()=>{
     console.log('Repair completed for customer: ', order.customerName);
-    repairConnection.emit('repair_completed');
+    console.log('---------------------------------');
+    repairConnection.emit('repair_completed', order);
   }, 3000);
 }
