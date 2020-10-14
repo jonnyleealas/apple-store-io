@@ -7,7 +7,7 @@ const saleConnection = io.connect(host);
 
 saleConnection.emit('join', 'salesRep');
 
-saleConnection.emit('getAll', {target: 'purchase_order', event: 'purchase_order'});
+saleConnection.emit('getAll', 'purchase_order');
 
 saleConnection.on('purchase_order', sales_waiting);
 

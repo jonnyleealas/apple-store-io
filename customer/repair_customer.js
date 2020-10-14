@@ -7,13 +7,14 @@ const repairConnection = io.connect(host);
 
 repairConnection.emit('join', 'repairOrder');
 
-repairConnection.emit('getAll', {target: 'repair_completed', event: 'repair_completed'});
+repairConnection.emit('getAll', 'repair_completed');
 
 repairConnection.on('repair_completed', repair_completed);
 
 function repair_completed(order){
 
   console.log(`Thank you for taking care of customer: ${order.customerName}'s order`);
+  console.log('---------------------------------------------------------------------');
 
   repairConnection.emit('received', {orderID: order.orderID, target: 'repair_completed'});
 

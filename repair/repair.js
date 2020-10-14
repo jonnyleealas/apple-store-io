@@ -7,7 +7,7 @@ const repairConnection = io.connect(host);
 
 repairConnection.emit('join', 'repairTech');
 
-repairConnection.emit('getAll', {target: 'repair_order', event: 'repair_order'});
+repairConnection.emit('getAll', 'repair_order');
 
 repairConnection.on('repair_order', repair_waiting);
 

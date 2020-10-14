@@ -7,17 +7,15 @@ const purchaseConnection = io.connect(host);
 
 purchaseConnection.emit('join', 'purchaseOrder');
 
-purchaseConnection.emit('getAll', {target: 'sales_completed', event: 'sales_completed'});
+purchaseConnection.emit('getAll', 'sales_completed');
 
 purchaseConnection.on('sales_completed', sales_completed);
 
 function sales_completed(order){
   console.log(`Thank you for taking care of customer: ${order.customerName}'s order`);
-
+  console.log('---------------------------------------------------------------------');
   purchaseConnection.emit('received', {orderID: order.orderID, target: 'sales_completed'});
-
 }
-
 
 function newPurchaseOrder(){
   setInterval(()=>{
