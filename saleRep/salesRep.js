@@ -5,16 +5,16 @@ const host = 'http://localhost:3000/store';
 
 const saleConnection = io.connect(host);
 
-saleConnection.emit('join', 'sales');
+saleConnection.emit('join', 'salesRep');
 
-saleConnection.emit('getAll', 'sales');
+saleConnection.emit('getAll', 'salesRep');
 
-saleConnection.on('sales_waiting', sales_waiting);
+saleConnection.on('purchase_order', sales_waiting);
 
 function sales_waiting(order){
   setTimeout(()=>{
-    console.log('Taking care of customer: ', order.customerName);
-    console.log('Ticket Number: ', order.ticket);
+    console.log('Taking care of customer: ', order.sales_order.customerName);
+    console.log('Ticket Number: ', order.sales_order.orderID);
     saleConnection.emit('received', 'sales');
   },1000);
 

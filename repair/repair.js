@@ -5,16 +5,16 @@ const host = 'http://localhost:3000/store';
 
 const repairConnection = io.connect(host);
 
-repairConnection.emit('join', 'repair');
+repairConnection.emit('join', 'repairTech');
 
-repairConnection.emit('getAll', 'repair');
+repairConnection.emit('getAll', 'repairTech');
 
-repairConnection.on('repair_waiting', repair_waiting);
+repairConnection.on('repair_order', repair_waiting);
 
 function repair_waiting(order){
   setTimeout(()=>{
-    console.log('Taking care of customer: ', order.customerName);
-    console.log('Ticket Number: ', order.ticket);
+    console.log('Taking care of customer: ', order.sales_order.customerName);
+    console.log('Ticket Number: ', order.sales_order.orderID);
     repairConnection.emit('received', 'repair');
   },1000);
 

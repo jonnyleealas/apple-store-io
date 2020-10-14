@@ -5,11 +5,11 @@ const io = require('socket.io')(3000);
 const storeNameSpace = io.of('/store');
 
 var salesOrderQueue = {
-  sales_order:{},
+  order:{},
 };
 
 var repairOrderQueue = {
-  repair_order:{},
+  order:{},
 };
 
 // var salesCompleteQueue={
@@ -26,23 +26,48 @@ function getAll (room){
   //get back later
 }
 
-function msgReceived (room){
-  //get back later
-}
+// function msgReceived (room){
+//   //get back later
+// }
 
-function handleCompleted(eventName, room=false){
-  // a universal completed event handler
-  return payload =>{
+// function handleCompleted(eventName, room=false){
+//   // a universal completed event handler
+//   return payload =>{
+//     const time = new Date();
+//     console.log({event: eventName, time, payload});
+//   };
+// }
+
+/**
+ * An universal event handler
+ * @ eventName
+ * @ room
+ */
+
+function handleOrders(eventName, room=false){
+  // The universal even handler
+  return payload=>{
     const time = new Date();
-    console.log({event: eventName, time, payload});
+    const map = {
+      'purchase_order': salesOrderQueue,
+      'repair_order': repairOrderQueue,
+    };
+
+    console.log('EVENT', {event: eventName, time, payload});
+
+    map[eventName].order[payload.orderID] = payload;
+
+    if (room===false) storeNameSpace.emit(eventName, map[eventName]);
+    else storeNameSpace.to(payload.orderHandler).emit(eventName, map[eventName]);
   };
 }
+
 
 storeNameSpace.on('connection', (socket)=>{
   console.log('Store Name Space connected', socket.id);
 
   socket.on('join', (room)=>{
-    const validRoom = ['sales', 'repair', 'purchase', 'repairOrder'];
+    const validRoom = ['salesRep', 'repairTech', 'purchaseOrder', 'repairOrder'];
     if (validRoom.includes(room)){
       console.log(`Welcome to the ${room} room`);
       socket.join(room);
@@ -51,11 +76,15 @@ storeNameSpace.on('connection', (socket)=>{
 
   socket.on('getAll', getAll);
 
-  socket.on('received', msgReceived);
+  // socket.on('received', msgReceived);
 
-  socket.on('sales_completed', handleCompleted);
+  // socket.on('sales_completed', handleCompleted);
 
-  socket.on('repair-completed', handleCompleted);
+  // socket.on('repair-completed', handleCompleted);
+
+  socket.on('purchase_order', handleOrders('purchase_order', true));
+
+  socket.on('repair_order', handleOrders('repair_order', true));
 
 
 });
