@@ -1,25 +1,25 @@
 'use strict';
-// This is the sales rep a
+// This is the repair tech's app
 const io = require('socket.io-client');
 const host = 'http://localhost:3000/store';
 
 const repairConnection = io.connect(host);
 
-repairConnection.emit('join', 'repair');
+repairConnection.emit('join', 'repairTech');
 
-repairConnection.emit('getAll', 'repair');
+repairConnection.emit('getAll', {eventName: 'repair_order', room: 'repairTech'});
 
-repairConnection.on('repair_waiting', repair_waiting);
+repairConnection.on('repair_order', repair_waiting);
 
 function repair_waiting(order){
-  setTimeout(()=>{
-    console.log('Taking care of customer: ', order.customerName);
-    console.log('Ticket Number: ', order.ticket);
-    repairConnection.emit('received', 'repair');
-  },1000);
+
+  console.log('Taking care of customer: ', order.customerName);
+  console.log('Ticket Number: ', order.orderID);
+  repairConnection.emit('received', {orderID: order.orderID, target: 'repair_order'});
 
   setTimeout(()=>{
     console.log('Repair completed for customer: ', order.customerName);
-    repairConnection.emit('repair_completed');
+    console.log('---------------------------------');
+    repairConnection.emit('repair_completed', order);
   }, 3000);
 }

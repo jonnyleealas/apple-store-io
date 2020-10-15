@@ -1,0 +1,1 @@
+![lab19uml](https://user-images.githubusercontent.com/63610026/95817090-80004200-0cd5-11eb-8396-7fd54fee9276.png)

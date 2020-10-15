@@ -1,25 +1,25 @@
 'use strict';
-// This is the sales rep a
+// This is the sales representitive's app
 const io = require('socket.io-client');
 const host = 'http://localhost:3000/store';
 
 const saleConnection = io.connect(host);
 
-saleConnection.emit('join', 'sales');
+saleConnection.emit('join', 'salesRep');
 
-saleConnection.emit('getAll', 'sales');
+saleConnection.emit('getAll', {eventName: 'purchase_order', room:'salesRep'} );
 
-saleConnection.on('sales_waiting', sales_waiting);
+saleConnection.on('purchase_order', sales_waiting);
 
 function sales_waiting(order){
-  setTimeout(()=>{
-    console.log('Taking care of customer: ', order.customerName);
-    console.log('Ticket Number: ', order.ticket);
-    saleConnection.emit('received', 'sales');
-  },1000);
+
+  console.log('Taking care of customer: ', order.customerName);
+  console.log('Ticket Number: ', order.orderID);
+  saleConnection.emit('received', {orderID: order.orderID, target: 'purchase_order'});
 
   setTimeout(()=>{
     console.log('Sales completed for customer: ', order.customerName);
-    saleConnection.emit('sales_completed');
+    console.log('---------------------------------');
+    saleConnection.emit('sales_completed', order);
   }, 3000);
 }

@@ -18,6 +18,7 @@
   "homepage": "https://github.com/jonnyleealas/apple-store-io#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "faker": "^5.1.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.1"
   }
