@@ -2,7 +2,6 @@
 // This is the sales rep app
 const io = require('socket.io-client');
 const host = 'http://localhost:3000/store';
-const faker = require('faker');
 const purchaseConnection = io.connect(host);
 
 purchaseConnection.emit('join', 'purchaseOrder');
@@ -12,22 +11,13 @@ purchaseConnection.emit('getAll', {eventName: 'sales_completed', room: 'purchase
 purchaseConnection.on('sales_completed', sales_completed);
 
 function sales_completed(order){
-  console.log(`Thank you for taking care of customer: ${order.customerName}'s order`);
+  let goodStuff = ['iPhone 12 mini', 'iPhone 12', 'iPhone 12 Pro', 'iPhone 12 Pro MAX', 'iPad Air', 'iPad Pro 11-inch', 'iPad Pro 12.9-inch'];
+  let randomOrder = goodStuff[Math.floor(Math.random() * goodStuff.length)];
+
+  console.log(`Purchasing customer ${order.customerName} received his new ${randomOrder}. Thank you! `);
   console.log('---------------------------------------------------------------------');
+  
   purchaseConnection.emit('received', {orderID: order.orderID, target: 'sales_completed'});
 }
 
-function newPurchaseOrder(){
-  setInterval(()=>{
-    let order = {
-      orderID: faker.random.uuid(),
-      customerName: faker.name.findName(),
-      address: faker.address.streetAddress(),
-      // orderHandler: 'salesRep',
-    };
 
-    purchaseConnection.emit('purchase_order', order);
-  }, 500);
-}
-
-newPurchaseOrder();
