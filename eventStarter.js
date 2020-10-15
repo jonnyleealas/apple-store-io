@@ -17,5 +17,5 @@ function newOrder(eventName, interval){
   }, interval);
 }
 
-newOrder('purchase_order', 3000);
-newOrder('repair_order', 4000);
+newOrder('purchase_order', 300);
+newOrder('repair_order', 400);

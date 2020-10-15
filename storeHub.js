@@ -42,15 +42,10 @@ storeNameSpace.on('connection', (socket)=>{
 });
 
 /**
- * This function receives the key of targeted queue, then emit the event with the value of that key in targed room, after that, deleted the key : value pair in the queue.
+ * This function receives the key of targeted queue, then emit the event with the value of that key in targed room
  * @param {string} msg
  */
 function getAll (msg){
-  // Object.keys(map[msg]).forEach(id => {
-  //   let payload = map[msg][id];
-  //   storeNameSpace.to(payload.orderHandler).emit(msg, payload);
-  //   delete map[msg][id];
-  // });
   emitEventsFromQueue(msg.eventName, msg.room);
 }
 

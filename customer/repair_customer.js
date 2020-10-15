@@ -14,7 +14,7 @@ function repair_completed(order){
   let oldStuff = ['iPhone 8', 'iPhone 7', 'iPhone 11 Pro', 'iPhone 11 Pro MAX', 'iPad 2016', 'iPad Pro 10.5-inch', 'iPad Pro 12.9-inch'];
   let randomOrder = oldStuff[Math.floor(Math.random() * oldStuff.length)];
 
-  console.log(`Rapairing customer ${order.customerName}'s ${randomOrder} is being repaired. Thank you! `);
+  console.log(`Repair for customer ${order.customerName}'s ${randomOrder} is now compeleted. Thank you! `);
   console.log('---------------------------------------------------------------------');
 
   repairConnection.emit('received', {orderID: order.orderID, target: 'repair_completed'});
