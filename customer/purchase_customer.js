@@ -7,7 +7,7 @@ const purchaseConnection = io.connect(host);
 
 purchaseConnection.emit('join', 'purchaseOrder');
 
-purchaseConnection.emit('getAll', 'sales_completed');
+purchaseConnection.emit('getAll', {eventName: 'sales_completed', room: 'purchaseOrder'});
 
 purchaseConnection.on('sales_completed', sales_completed);
 
@@ -23,11 +23,11 @@ function newPurchaseOrder(){
       orderID: faker.random.uuid(),
       customerName: faker.name.findName(),
       address: faker.address.streetAddress(),
-      orderHandler: 'salesRep',
+      // orderHandler: 'salesRep',
     };
 
     purchaseConnection.emit('purchase_order', order);
-  }, 5000);
+  }, 500);
 }
 
 newPurchaseOrder();

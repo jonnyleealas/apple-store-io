@@ -15,54 +15,7 @@ var map = {
   'repair_completed': repairCompleteQueue,
 };
 
-/**
- * This function receives the key of targeted queue, then emit the event with the value of that key in targed room, after that, deleted the key : value pair in the queue.
- * @param {string} msg
- */
-function getAll (msg){
-  //get back later
-  Object.keys(map[msg]).forEach(id => {
-    let payload = map[msg][id];
-    storeNameSpace.to(payload.orderHandler).emit(msg, payload);
-    delete map[msg][id];
-  });
-}
-
-/**
- * This function receives the key of targeted queue, and deleted the key : value pair in the queue.
- * @param {string} msg
- */
-function msgReceived (msg){
-  delete map[msg.target][msg.orderID];
-}
-
-
-/**
- * This function takes the event name, and an optional switch 'room', return a function with payload as param, console log the event, add the payload to the queue, then based on the 'room' switch status, decide wither broadcast the event in the name space or send it to a specific room.
- * @param {string} eventName Param to pass the event name to the handler.
- * @param {*} [room] optional. when is true, the function will emit the message to the room specific room passed in the payload
- */
-function handleEvent(eventName, room=null){
-  // The universal even handler
-  return payload=>{
-    const time = new Date();
-
-    console.log('EVENT', {event: eventName, time, payload});
-
-    map[eventName][payload.orderID] = payload;
-
-    if (!room) {
-      storeNameSpace.emit(eventName, map[eventName]);
-    } else {
-      Object.keys(map[eventName]).forEach(id => {
-        let payload = map[eventName][id];
-        storeNameSpace.to(room).emit(eventName, payload);
-      });
-    }
-  };
-}
-
-
+// Main logic for event Hub server.
 storeNameSpace.on('connection', (socket)=>{
   console.log('Store Name Space connected', socket.id);
 
@@ -78,13 +31,60 @@ storeNameSpace.on('connection', (socket)=>{
 
   socket.on('received', msgReceived);
 
-  socket.on('sales_completed', handleEvent('sales_completed', 'purchaseOrder'));
-
-  socket.on('repair_completed', handleEvent('repair_completed', 'repairOrder'));
-
   socket.on('purchase_order', handleEvent('purchase_order', 'salesRep'));
 
   socket.on('repair_order', handleEvent('repair_order', 'repairTech'));
 
+  socket.on('sales_completed', handleEvent('sales_completed', 'purchaseOrder'));
+
+  socket.on('repair_completed', handleEvent('repair_completed', 'repairOrder'));
+
 });
+
+/**
+ * This function receives the key of targeted queue, then emit the event with the value of that key in targed room, after that, deleted the key : value pair in the queue.
+ * @param {string} msg
+ */
+function getAll (msg){
+  // Object.keys(map[msg]).forEach(id => {
+  //   let payload = map[msg][id];
+  //   storeNameSpace.to(payload.orderHandler).emit(msg, payload);
+  //   delete map[msg][id];
+  // });
+  emitEventsFromQueue(msg.eventName, msg.room);
+}
+
+/**
+ * This function receives the key of targeted queue, and deleted the key : value pair in the queue.
+ * @param {string} msg
+ */
+function msgReceived (msg){
+  delete map[msg.target][msg.orderID];
+}
+
+function emitEventsFromQueue(eventName, room=null){
+  Object.keys(map[eventName]).forEach(id => {
+    let payload = map[eventName][id];
+    if (!room) storeNameSpace.emit(eventName, payload);
+    else storeNameSpace.to(room).emit(eventName, payload);
+  });
+}
+
+/**
+ * This function takes the event name, and an optional string as socket.io room name , return a function will be ran with payload as param, console log the event, add the payload to the queue, then emits events from the queue.
+ * @param {string} eventName Param to pass the event name to the handler.
+ * @param {string} [room] optional. when is true, the function will emit the message to the room specific room passed in the payload
+ */
+function handleEvent(eventName, room=null){
+  // The universal even handler
+  return payload=>{
+    const time = new Date();
+
+    console.log('EVENT', {event: eventName, time, payload});
+
+    map[eventName][payload.orderID] = payload;
+
+    emitEventsFromQueue(eventName, room);
+  };
+}
 

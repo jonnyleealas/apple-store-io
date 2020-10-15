@@ -7,7 +7,7 @@ const repairConnection = io.connect(host);
 
 repairConnection.emit('join', 'repairOrder');
 
-repairConnection.emit('getAll', 'repair_completed');
+repairConnection.emit('getAll', {eventName: 'repair_completed', room:'repairOrder'});
 
 repairConnection.on('repair_completed', repair_completed);
 
@@ -17,7 +17,6 @@ function repair_completed(order){
   console.log('---------------------------------------------------------------------');
 
   repairConnection.emit('received', {orderID: order.orderID, target: 'repair_completed'});
-
 }
 
 function newRepairOrder(){
@@ -26,11 +25,11 @@ function newRepairOrder(){
       orderID: faker.random.uuid(),
       customerName: faker.name.findName(),
       address: faker.address.streetAddress(),
-      orderHandler: 'repairTech',
+      // orderHandler: 'repairTech',
     };
 
     repairConnection.emit('repair_order', order);
-  }, 5000);
+  }, 500);
 }
 
 newRepairOrder();
