@@ -1,5 +1,5 @@
 'use strict';
-// This is the sales rep app
+// This is the repairing customer's app
 const io = require('socket.io-client');
 const host = 'http://localhost:3000/store';
 const repairConnection = io.connect(host);

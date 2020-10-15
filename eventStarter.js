@@ -1,5 +1,5 @@
 'use strict';
-// This is the sales rep app
+// This is where everything get started
 const io = require('socket.io-client');
 const host = 'http://localhost:3000/store';
 const faker = require('faker');

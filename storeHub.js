@@ -62,6 +62,11 @@ function msgReceived (msg){
   delete map[msg.target][msg.orderID];
 }
 
+/**
+ *This function takes event name, find the proper queue and emit event to the namesapce from that queue. If Room is being passed, it will emit the event in that room only.
+ * @param {string} eventName
+ * @param {string} [room] optional param
+ */
 function emitEventsFromQueue(eventName, room=null){
   Object.keys(map[eventName]).forEach(id => {
     let payload = map[eventName][id];

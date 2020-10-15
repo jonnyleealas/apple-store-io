@@ -1,5 +1,5 @@
 'use strict';
-// This is the sales rep a
+// This is the repair tech's app
 const io = require('socket.io-client');
 const host = 'http://localhost:3000/store';
 

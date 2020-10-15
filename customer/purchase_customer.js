@@ -1,5 +1,5 @@
 'use strict';
-// This is the sales rep app
+// This is the purchasing customer's app
 const io = require('socket.io-client');
 const host = 'http://localhost:3000/store';
 const purchaseConnection = io.connect(host);
@@ -16,7 +16,7 @@ function sales_completed(order){
 
   console.log(`Purchasing customer ${order.customerName} received his new ${randomOrder}. Thank you! `);
   console.log('---------------------------------------------------------------------');
-  
+
   purchaseConnection.emit('received', {orderID: order.orderID, target: 'sales_completed'});
 }
 
